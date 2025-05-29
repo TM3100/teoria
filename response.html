@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uso de ResponseEntity en Spring Boot</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html">Métodos HTTP</a></li>
+      <li><a href="arquitectura.html">Arquitectura Spring Boot</a></li>
+      <li><a href="anotaciones.html">Anotaciones Principales</a></li>
+      <li><a href="response.html" class="active">Uso de ResponseEntity</a></li>
+      <li><a href="persistencia.html">Persistencia de Datos</a></li>
+      <li><a href="jparepository.html">JpaRepository</a></li>
+      <li><a href="decorador.html">Patrón Decorador</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>Uso de ResponseEntity en Spring Boot</h1>
+    <p class="autor">Material elaborado con apoyo de ChatGPT (OpenAI, 2025)</p>
+  </header>
+
+  <main>
+    <section class="content-section">
+      <h2>¿Qué es ResponseEntity?</h2>
+      <p><code>ResponseEntity</code> es una clase de Spring que permite controlar completamente la respuesta HTTP que se envía desde un método del controlador. Puedes especificar el cuerpo, el código de estado y los encabezados.</p>
+
+      <h2>Ejemplo básico de ResponseEntity</h2>
+      <pre><code>@GetMapping("/mensaje")
+public ResponseEntity<String> obtenerMensaje() {
+    return ResponseEntity.ok("Hola desde Spring Boot");
+}</code></pre>
+
+      <h2>Respuesta con código de estado personalizado</h2>
+      <pre><code>@GetMapping("/no-encontrado")
+public ResponseEntity<String> recursoNoEncontrado() {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Recurso no encontrado");
+}</code></pre>
+
+      <h2>Uso con objetos</h2>
+      <pre><code>@GetMapping("/usuario/{id}")
+public ResponseEntity<Usuario> obtenerUsuario(@PathVariable Long id) {
+    Optional<Usuario> usuario = servicio.buscarPorId(id);
+    if (usuario.isPresent()) {
+        return ResponseEntity.ok(usuario.get());
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+}</code></pre>
+
+      <h2>Personalización con encabezados</h2>
+      <pre><code>@GetMapping("/custom")
+public ResponseEntity<String> respuestaConEncabezado() {
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("X-Custom-Header", "Valor personalizado");
+    return ResponseEntity.ok().headers(headers).body("Respuesta con encabezado personalizado");
+}</code></pre>
+
+      <p><code>ResponseEntity</code> es muy útil cuando se necesita un control fino sobre la respuesta HTTP, como establecer diferentes códigos de estado, manejar errores o incluir encabezados personalizados.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Material educativo generado con ayuda de ChatGPT – OpenAI, 2025.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arquitectura Spring Boot</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html">Métodos HTTP</a></li>
+      <li><a href="arquitectura.html" class="active">Arquitectura Spring Boot</a></li>
+      <li><a href="anotaciones.html">Anotaciones Principales</a></li>
+      <li><a href="response.html">Uso de ResponseEntity</a></li>
+      <li><a href="persistencia.html">Persistencia de Datos</a></li>
+      <li><a href="jparepository.html">JpaRepository</a></li>
+      <li><a href="decorador.html">Patrón Decorador</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>Arquitectura en Spring Boot: MVC + Capas Service y Repository</h1>
+    <p class="autor">Material elaborado con apoyo de ChatGPT (OpenAI, 2025)</p>
+  </header>
+
+  <main>
+    <section class="table-container">
+      <h2>2. Arquitectura MVC con Capas Adicionales</h2>
+      <p>Spring Boot adopta una arquitectura basada en el patrón Modelo-Vista-Controlador (MVC), y la complementa con las capas de Servicio y Repositorio para una mejor separación de responsabilidades. Esta estructura favorece el mantenimiento, la escalabilidad y la reutilización del código en aplicaciones empresariales modernas.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Capa</th>
+            <th>Descripción</th>
+            <th>Responsabilidad Principal</th>
+            <th>Ejemplo en Código</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Controller</td>
+            <td>Gestiona las solicitudes HTTP y delega el trabajo a la capa de servicio.</td>
+            <td>Exponer endpoints REST (API)</td>
+            <td><code>@RestController<br>@GetMapping("/clientes")</code></td>
+          </tr>
+          <tr>
+            <td>Service</td>
+            <td>Contiene la lógica del negocio. Procesa datos y coordina operaciones.</td>
+            <td>Lógica de aplicación</td>
+            <td><code>@Service<br>public class ClienteService</code></td>
+          </tr>
+          <tr>
+            <td>Repository</td>
+            <td>Interactúa directamente con la base de datos mediante JPA o SQL.</td>
+            <td>Acceso y persistencia de datos</td>
+            <td><code>@Repository<br>interface ClienteRepository extends JpaRepository</code></td>
+          </tr>
+          <tr>
+            <td>Model</td>
+            <td>Representa las entidades o clases del dominio de la aplicación.</td>
+            <td>Definición de objetos de negocio</td>
+            <td><code>public class Cliente<br>@Entity</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Flujo de una Solicitud</h3>
+      <ol>
+        <li>El cliente (por ejemplo, Postman) realiza una solicitud HTTP (GET, POST, etc.).</li>
+        <li>El <strong>Controller</strong> la recibe y llama al método correspondiente del <strong>Service</strong>.</li>
+        <li>El <strong>Service</strong> procesa la lógica y consulta o guarda datos a través del <strong>Repository</strong>.</li>
+        <li>El <strong>Repository</strong> accede a la base de datos utilizando JPA.</li>
+        <li>El resultado vuelve hacia el cliente encapsulado en una respuesta.</li>
+      </ol>
+
+      <p>Este enfoque modular permite realizar pruebas unitarias más fácilmente, facilita el mantenimiento del sistema y reduce el acoplamiento entre componentes.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Material educativo generado con ayuda de ChatGPT – OpenAI, 2025.</p>
+  </footer>
+</body>
+</html>

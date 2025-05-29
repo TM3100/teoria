@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Patrón Decorador en Spring Boot</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html">Métodos HTTP</a></li>
+      <li><a href="arquitectura.html">Arquitectura Spring Boot</a></li>
+      <li><a href="anotaciones.html">Anotaciones Principales</a></li>
+      <li><a href="response.html">Uso de ResponseEntity</a></li>
+      <li><a href="persistencia.html">Persistencia de Datos</a></li>
+      <li><a href="jparepository.html">JpaRepository</a></li>
+      <li><a href="decorador.html" class="active">Patrón Decorador</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>Patrón Decorador en Spring Boot</h1>
+    <p class="autor">Material elaborado con apoyo de ChatGPT (OpenAI, 2025)</p>
+  </header>
+
+  <main>
+    <section class="content-section">
+      <h2>¿Qué es el patrón decorador tradicional?</h2>
+      <p>
+        El patrón decorador es un patrón de diseño que permite agregar responsabilidades
+        o funcionalidades adicionales a un objeto de manera dinámica, sin modificar su código original.
+        Esto se logra creando una clase envolvente que implementa la misma interfaz que el objeto original y delega las llamadas,
+        añadiendo funcionalidad antes o después de la llamada.
+      </p>
+
+      <h3>Ejemplo clásico en Java:</h3>
+      <pre><code>public interface Mensaje {
+    String obtenerMensaje();
+}
+
+public class MensajeSimple implements Mensaje {
+    public String obtenerMensaje() {
+        return "Hola mundo";
+    }
+}
+
+public class MensajeDecorador implements Mensaje {
+    private Mensaje mensaje;
+
+    public MensajeDecorador(Mensaje mensaje) {
+        this.mensaje = mensaje;
+    }
+
+    @Override
+    public String obtenerMensaje() {
+        return "**" + mensaje.obtenerMensaje() + "**"; // Añade decoración al mensaje
+    }
+}</code></pre>
+
+      <h2>¿Cómo aplica Spring Boot este concepto?</h2>
+      <p>
+        En Spring Boot, el patrón decorador tradicional no se usa creando manualmente clases envolventes.
+        En cambio, Spring utiliza <strong>programación orientada a aspectos (AOP)</strong> y <strong>proxies dinámicos</strong> para "decorar" beans y añadir funcionalidades transversales como:
+      </p>
+      <ul>
+        <li>Manejo automático de transacciones</li>
+        <li>Cacheo de resultados</li>
+        <li>Ejecutar métodos de forma asíncrona</li>
+        <li>Logging y auditoría</li>
+      </ul>
+      <p>
+        Esto se logra con anotaciones que decoran métodos o clases sin modificar el código base.
+      </p>
+
+      <h2>Ejemplo práctico en Spring Boot: manejo de transacciones con <code>@Transactional</code></h2>
+      <pre><code>@Service
+public class PedidoService {
+
+    @Transactional  // Esta anotación “decora” el método para que se ejecute dentro de una transacción
+    public void procesarPedido(Pedido pedido) {
+        // Lógica para procesar el pedido
+        // Si ocurre un error, la transacción se revierte automáticamente
+    }
+}</code></pre>
+
+      <h2>Ejemplo: Cache con <code>@Cacheable</code></h2>
+      <pre><code>@Service
+public class ProductoService {
+
+    @Cacheable("productos")  // Cachea el resultado la primera vez que se ejecuta
+    public Producto obtenerProductoPorId(Long id) {
+        // Consulta a la base de datos
+    }
+}</code></pre>
+
+      <h2>¿Cómo funciona internamente Spring para decorar?</h2>
+      <p>
+        Spring crea <em>proxies dinámicos</em> que interceptan las llamadas a los métodos de los beans.
+        El proxy añade comportamiento extra antes o después de invocar el método original.
+        Así, la lógica del método no se modifica, pero su comportamiento se extiende, implementando el patrón decorador de forma automática y transparente.
+      </p>
+
+      <h2>Resumen</h2>
+      <ul>
+        <li>El patrón decorador tradicional implica envolver objetos manualmente.</li>
+        <li>Spring Boot aplica el patrón decorador mediante AOP y proxies dinámicos.</li>
+        <li>Las anotaciones como <code>@Transactional</code> o <code>@Cacheable</code> son ejemplos de decoración automática.</li>
+        <li>Esto permite añadir funcionalidades transversales sin modificar el código del negocio.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>Material educativo generado con ayuda de ChatGPT – OpenAI, 2025.</p>
+  </footer>
+</body>
+</html>

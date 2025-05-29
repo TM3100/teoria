@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Persistencia de Datos en Spring Boot</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html">Métodos HTTP</a></li>
+      <li><a href="arquitectura.html">Arquitectura Spring Boot</a></li>
+      <li><a href="anotaciones.html">Anotaciones Principales</a></li>
+      <li><a href="response.html">Uso de ResponseEntity</a></li>
+      <li><a href="persistencia.html" class="active">Persistencia de Datos</a></li>
+      <li><a href="jparepository.html">JpaRepository</a></li>
+      <li><a href="decorador.html">Patrón Decorador</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>Persistencia de Datos en Spring Boot</h1>
+    <p class="autor">Material elaborado con apoyo de ChatGPT (OpenAI, 2025)</p>
+  </header>
+
+  <main>
+    <section class="content-section">
+      <h2>¿Qué es la persistencia de datos?</h2>
+      <p>
+        La persistencia de datos es la capacidad de almacenar datos de forma permanente en una base de datos o almacenamiento externo,
+        permitiendo que la información sobreviva después de que la aplicación termine su ejecución. En aplicaciones cliente-servidor,
+        la persistencia es clave para mantener la integridad y disponibilidad de la información.
+      </p>
+
+      <h2>Spring Data JPA para la persistencia</h2>
+      <p>
+        Spring Boot facilita la integración con bases de datos usando <strong>Spring Data JPA</strong>, que es una implementación de la
+        especificación JPA (Java Persistence API). Esto permite mapear objetos Java a tablas de base de datos de forma sencilla y con mínima configuración.
+      </p>
+
+      <h2>Configuración básica</h2>
+      <p>Para activar la persistencia en Spring Boot debes agregar las siguientes dependencias en tu <code>pom.xml</code> (Maven):</p>
+      <pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+    &lt;artifactId&gt;h2&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+
+      <p>En este ejemplo usamos H2, una base de datos en memoria para pruebas rápidas.</p>
+
+      <h2>Archivo de configuración <code>application.properties</code></h2>
+      <pre><code>spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto=update</code></pre>
+
+      <h2>Entidad y tabla</h2>
+      <p>
+        Una <strong>entidad</strong> es una clase Java que representa una tabla en la base de datos. Se usa la anotación <code>@Entity</code>
+        para definirla, y cada atributo se mapea a una columna.
+      </p>
+      <pre><code>@Entity
+public class Producto {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  private String nombre;
+  private Double precio;
+
+  // getters y setters
+}</code></pre>
+
+      <h2>Repositorio para acceso a datos</h2>
+      <p>
+        El repositorio es la interfaz que permite realizar operaciones CRUD sobre la base de datos, extendiendo
+        <code>JpaRepository</code>.
+      </p>
+      <pre><code>public interface ProductoRepository extends JpaRepository&lt;Producto, Long&gt; {
+    // Métodos adicionales si se requieren
+}</code></pre>
+
+      <h2>Servicio para lógica de negocio</h2>
+      <pre><code>@Service
+public class ProductoService {
+  
+  @Autowired
+  private ProductoRepository productoRepository;
+
+  public List&lt;Producto&gt; listarProductos() {
+    return productoRepository.findAll();
+  }
+
+  public Producto guardarProducto(Producto producto) {
+    return productoRepository.save(producto);
+  }
+
+  public void eliminarProducto(Long id) {
+    productoRepository.deleteById(id);
+  }
+}</code></pre>
+
+      <h2>Controlador REST para exponer los datos</h2>
+      <pre><code>@RestController
+@RequestMapping(\"/api/productos\")
+public class ProductoController {
+
+  @Autowired
+  private ProductoService productoService;
+
+  @GetMapping
+  public List&lt;Producto&gt; obtenerProductos() {
+    return productoService.listarProductos();
+  }
+
+  @PostMapping
+  public Producto crearProducto(@RequestBody Producto producto) {
+    return productoService.guardarProducto(producto);
+  }
+
+  @DeleteMapping(\"/{id}\")
+  public ResponseEntity&lt;Void&gt; eliminarProducto(@PathVariable Long id) {
+    productoService.eliminarProducto(id);
+    return ResponseEntity.noContent().build();
+  }
+}</code></pre>
+
+      <h2>Ventajas de usar Spring Data JPA</h2>
+      <ul>
+        <li>Abstracción de la capa de persistencia, menos código repetitivo.</li>
+        <li>Implementación automática de métodos CRUD básicos.</li>
+        <li>Integración con diferentes bases de datos (H2, MySQL, PostgreSQL, etc.).</li>
+        <li>Soporte para consultas personalizadas con JPQL y Query Methods.</li>
+        <li>Gestión automática de transacciones.</li>
+      </ul>
+
+      <h2>Conclusión</h2>
+      <p>
+        La persistencia de datos es fundamental en el desarrollo de aplicaciones cliente-servidor. Spring Boot con Spring Data JPA ofrece
+        una solución sencilla, poderosa y flexible para interactuar con bases de datos, permitiendo concentrarse en la lógica de negocio.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Material educativo generado con ayuda de ChatGPT – OpenAI, 2025.</p>
+  </footer>
+</body>
+</html>

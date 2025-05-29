@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desarrollo Cliente-Servidor con Spring Boot</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html">Métodos HTTP</a></li>
+      <li><a href="arquitectura.html">Arquitectura Spring Boot</a></li>
+      <li><a href="anotaciones.html">Anotaciones Principales</a></li>
+      <li><a href="response.html">Uso de ResponseEntity</a></li>
+      <li><a href="persistencia.html">Persistencia de Datos</a></li>
+      <li><a href="jparepository.html">JpaRepository</a></li>
+      <li><a href="decorador.html">Patrón Decorador</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>Desarrollo de Aplicaciones Cliente-Servidor con Spring Boot</h1>
+    <p class="autor">Material elaborado con apoyo de ChatGPT (OpenAI, 2025)</p>
+  </header>
+
+  <main>
+    <section class="table-container">
+      <h2>1. ¿Qué son los Métodos HTTP?</h2>
+      <p>Los métodos HTTP son instrucciones estándar utilizadas para comunicar solicitudes del cliente al servidor en el modelo cliente-servidor. Se utilizan en APIs REST para manipular recursos. En Spring Boot, cada método se asocia comúnmente con una anotación específica para definir controladores RESTful. Con Postman u otras herramientas similares, se pueden simular estas solicitudes para probar el comportamiento del servidor.</p>
+
+      <h3>Tabla de Métodos HTTP</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Método</th>
+            <th>Descripción</th>
+            <th>Uso Típico</th>
+            <th>Anotación en Spring Boot</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>GET</td>
+            <td>Solicita datos del servidor sin alterarlos.</td>
+            <td>Consultar listas o detalles de un recurso.</td>
+            <td><code>@GetMapping</code></td>
+          </tr>
+          <tr>
+            <td>POST</td>
+            <td>Envía datos al servidor para crear un nuevo recurso.</td>
+            <td>Registrar nuevos usuarios o crear entradas.</td>
+            <td><code>@PostMapping</code></td>
+          </tr>
+          <tr>
+            <td>PUT</td>
+            <td>Reemplaza completamente un recurso existente.</td>
+            <td>Actualizar un recurso con nuevos valores.</td>
+            <td><code>@PutMapping</code></td>
+          </tr>
+          <tr>
+            <td>PATCH</td>
+            <td>Actualiza parcialmente un recurso existente.</td>
+            <td>Cambiar solo algunos campos de un recurso.</td>
+            <td><code>@PatchMapping</code></td>
+          </tr>
+          <tr>
+            <td>DELETE</td>
+            <td>Elimina un recurso del servidor.</td>
+            <td>Borrar un registro por ID.</td>
+            <td><code>@DeleteMapping</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Códigos de Estado HTTP</h3>
+      <p>Estos códigos informan al cliente si la solicitud fue procesada correctamente o si ocurrió un error. Su uso adecuado mejora la claridad y robustez de las respuestas en una API RESTful.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Mensaje</th>
+            <th>Descripción</th>
+            <th>Uso Común</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>200</td>
+            <td>OK</td>
+            <td>La solicitud se procesó exitosamente.</td>
+            <td>GET exitoso</td>
+          </tr>
+          <tr>
+            <td>201</td>
+            <td>Created</td>
+            <td>Recurso creado satisfactoriamente.</td>
+            <td>POST exitoso</td>
+          </tr>
+          <tr>
+            <td>204</td>
+            <td>No Content</td>
+            <td>Operación realizada pero sin datos en la respuesta.</td>
+            <td>DELETE exitoso</td>
+          </tr>
+          <tr>
+            <td>400</td>
+            <td>Bad Request</td>
+            <td>La solicitud contiene errores de sintaxis o datos inválidos.</td>
+            <td>Formulario incompleto</td>
+          </tr>
+          <tr>
+            <td>401</td>
+            <td>Unauthorized</td>
+            <td>No se ha proporcionado autenticación válida.</td>
+            <td>Token de acceso faltante</td>
+          </tr>
+          <tr>
+            <td>403</td>
+            <td>Forbidden</td>
+            <td>El usuario no tiene permisos para esta acción.</td>
+            <td>Intento de acceso no autorizado</td>
+          </tr>
+          <tr>
+            <td>404</td>
+            <td>Not Found</td>
+            <td>No se encuentra el recurso solicitado.</td>
+            <td>ID inválido o inexistente</td>
+          </tr>
+          <tr>
+            <td>500</td>
+            <td>Internal Server Error</td>
+            <td>Error inesperado en el servidor.</td>
+            <td>Excepciones no controladas</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Estos códigos pueden ser devueltos utilizando <code>ResponseEntity</code> para mayor flexibilidad, lo cual veremos más adelante.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Material educativo generado con ayuda de ChatGPT – OpenAI, 2025.</p>
+  </footer>
+</body>
+</html>

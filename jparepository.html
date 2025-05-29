@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JpaRepository en Spring Boot</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html">Métodos HTTP</a></li>
+      <li><a href="arquitectura.html">Arquitectura Spring Boot</a></li>
+      <li><a href="anotaciones.html">Anotaciones Principales</a></li>
+      <li><a href="response.html">Uso de ResponseEntity</a></li>
+      <li><a href="persistencia.html">Persistencia de Datos</a></li>
+      <li><a href="jparepository.html" class="active">JpaRepository</a></li>
+      <li><a href="decorador.html">Patrón Decorador</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>JpaRepository en Spring Boot</h1>
+    <p class="autor">Material elaborado con apoyo de ChatGPT (OpenAI, 2025)</p>
+  </header>
+
+  <main>
+    <section class="content-section">
+      <h2>¿Qué es JpaRepository?</h2>
+      <p>
+        <strong>JpaRepository</strong> es una interfaz que forma parte de Spring Data JPA. Proporciona un conjunto completo de métodos para realizar operaciones
+        CRUD (Crear, Leer, Actualizar, Eliminar) y consultas sobre entidades JPA sin necesidad de implementar código explícito.
+      </p>
+
+      <h2>Ventajas de usar JpaRepository</h2>
+      <ul>
+        <li>Permite reducir la cantidad de código para la capa de acceso a datos.</li>
+        <li>Incluye métodos predefinidos para operaciones comunes como <code>save()</code>, <code>findById()</code>, <code>findAll()</code>, <code>deleteById()</code>, entre otros.</li>
+        <li>Soporta paginación y ordenamiento.</li>
+        <li>Facilita la definición de consultas personalizadas mediante métodos con nombres específicos o anotaciones JPQL/SQL.</li>
+      </ul>
+
+      <h2>Uso básico de JpaRepository</h2>
+      <p>
+        Para usar JpaRepository debes crear una interfaz que extienda JpaRepository indicando el tipo de entidad y el tipo de su clave primaria.
+      </p>
+      <pre><code>import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProductoRepository extends JpaRepository&lt;Producto, Long&gt; {
+  // Puedes definir consultas personalizadas aquí si es necesario
+}</code></pre>
+
+      <h2>Métodos comunes disponibles</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Método</th>
+            <th>Descripción</th>
+            <th>Uso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>save(S entity)</code></td>
+            <td>Guarda o actualiza una entidad en la base de datos.</td>
+            <td>Insertar un nuevo producto o actualizar uno existente.</td>
+          </tr>
+          <tr>
+            <td><code>findById(ID id)</code></td>
+            <td>Busca una entidad por su ID.</td>
+            <td>Obtener un producto específico por su identificador.</td>
+          </tr>
+          <tr>
+            <td><code>findAll()</code></td>
+            <td>Obtiene todas las entidades de ese tipo.</td>
+            <td>Listar todos los productos disponibles.</td>
+          </tr>
+          <tr>
+            <td><code>deleteById(ID id)</code></td>
+            <td>Elimina una entidad por su ID.</td>
+            <td>Borrar un producto de la base de datos.</td>
+          </tr>
+          <tr>
+            <td><code>existsById(ID id)</code></td>
+            <td>Verifica si una entidad existe por su ID.</td>
+            <td>Validar existencia antes de alguna operación.</td>
+          </tr>
+          <tr>
+            <td><code>count()</code></td>
+            <td>Cuenta el total de entidades almacenadas.</td>
+            <td>Obtener el número total de productos registrados.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Consultas personalizadas usando Query Methods</h2>
+      <p>
+        JpaRepository permite definir métodos que crean consultas automáticamente según el nombre del método.
+      </p>
+      <pre><code>List&lt;Producto&gt; findByNombre(String nombre);
+
+List&lt;Producto&gt; findByPrecioGreaterThan(Double precio);</code></pre>
+
+      <h2>Consultas personalizadas con @Query</h2>
+      <p>
+        También puedes usar la anotación <code>@Query</code> para escribir consultas JPQL o nativas:
+      </p>
+      <pre><code>import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+@Query("SELECT p FROM Producto p WHERE p.nombre LIKE %:nombre%")
+List&lt;Producto&gt; buscarPorNombre(@Param("nombre") String nombre);</code></pre>
+
+      <h2>Integración con el servicio</h2>
+      <pre><code>@Service
+public class ProductoService {
+
+  @Autowired
+  private ProductoRepository productoRepository;
+
+  public List&lt;Producto&gt; obtenerProductosPorNombre(String nombre) {
+    return productoRepository.buscarPorNombre(nombre);
+  }
+}</code></pre>
+
+      <h2>Conclusión</h2>
+      <p>
+        JpaRepository es una herramienta poderosa que simplifica la gestión de datos en aplicaciones Spring Boot, reduciendo la necesidad de escribir SQL y
+        permitiendo un desarrollo más rápido y limpio.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Material educativo generado con ayuda de ChatGPT – OpenAI, 2025.</p>
+  </footer>
+</body>
+</html>

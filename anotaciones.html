@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anotaciones en Spring Boot</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html">Métodos HTTP</a></li>
+      <li><a href="arquitectura.html">Arquitectura Spring Boot</a></li>
+      <li><a href="anotaciones.html" class="active">Anotaciones Principales</a></li>
+      <li><a href="response.html">Uso de ResponseEntity</a></li>
+      <li><a href="persistencia.html">Persistencia de Datos</a></li>
+      <li><a href="jparepository.html">JpaRepository</a></li>
+      <li><a href="decorador.html">Patrón Decorador</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>Anotaciones Principales en Spring Boot</h1>
+    <p class="autor">Material elaborado con apoyo de ChatGPT (OpenAI, 2025)</p>
+  </header>
+
+  <main>
+    <section class="content-section">
+      <h2>@RestController</h2>
+      <p>Indica que la clase es un controlador donde cada método devuelve un objeto que se serializa automáticamente a JSON.</p>
+      <pre><code>@RestController
+@RequestMapping("/api/usuarios")
+public class UsuarioController {
+
+    @GetMapping("/{id}")
+    public Usuario obtenerUsuario(@PathVariable Long id) {
+        return servicio.buscarPorId(id);
+    }
+}</code></pre>
+
+      <h2>@RequestMapping, @GetMapping, @PostMapping, etc.</h2>
+      <p>Se utilizan para mapear solicitudes HTTP a métodos del controlador. Las anotaciones como <code>@GetMapping</code> o <code>@PostMapping</code> son especializaciones de <code>@RequestMapping</code>.</p>
+      <pre><code>@PostMapping("/")
+public Usuario crear(@RequestBody Usuario usuario) {
+    return servicio.guardar(usuario);
+}</code></pre>
+
+      <h2>@PathVariable</h2>
+      <p>Vincula una variable de la ruta URL al parámetro del método.</p>
+      <pre><code>@GetMapping("/{id}")
+public Usuario buscar(@PathVariable Long id) {
+    return servicio.buscarPorId(id);
+}</code></pre>
+
+      <h2>@RequestBody</h2>
+      <p>Indica que el cuerpo de la solicitud HTTP debe ser mapeado al objeto del método.</p>
+      <pre><code>@PostMapping("/")
+public Usuario crear(@RequestBody Usuario usuario) {
+    return servicio.guardar(usuario);
+}</code></pre>
+
+      <h2>@Autowired</h2>
+      <p>Permite la inyección automática de dependencias, como servicios o repositorios.</p>
+      <pre><code>@RestController
+public class UsuarioController {
+
+    @Autowired
+    private UsuarioService servicio;
+}</code></pre>
+
+      <h2>@Service</h2>
+      <p>Marca una clase como un servicio, un componente que contiene la lógica de negocio.</p>
+      <pre><code>@Service
+public class UsuarioService {
+
+    @Autowired
+    private UsuarioRepository repositorio;
+
+    public Usuario guardar(Usuario usuario) {
+        return repositorio.save(usuario);
+    }
+}</code></pre>
+
+      <h2>@Repository</h2>
+      <p>Indica que la clase interactúa directamente con la base de datos.</p>
+      <pre><code>@Repository
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+}</code></pre>
+
+      <h2>@Entity</h2>
+      <p>Define una clase que representa una tabla en la base de datos.</p>
+      <pre><code>@Entity
+public class Usuario {
+  
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String nombre;
+}</code></pre>
+
+      <h2>@SpringBootApplication</h2>
+      <p>Es una anotación compuesta que incluye <code>@Configuration</code>, <code>@EnableAutoConfiguration</code> y <code>@ComponentScan</code>. Se coloca en la clase principal del proyecto.</p>
+      <pre><code>@SpringBootApplication
+public class MiAplicacion {
+    public static void main(String[] args) {
+        SpringApplication.run(MiAplicacion.class, args);
+    }
+}</code></pre>
+
+      <p>Estas anotaciones son la base para construir una aplicación moderna con Spring Boot y seguir el patrón MVC, separando responsabilidades entre controlador, servicio, repositorio y entidad.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Material educativo generado con ayuda de ChatGPT – OpenAI, 2025.</p>
+  </footer>
+</body>
+</html>
